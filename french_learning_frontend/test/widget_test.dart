@@ -11,9 +11,11 @@ void main() {
     final bottomNavFinder = find.byType(BottomNavigationBar);
     expect(bottomNavFinder, findsOneWidget);
 
-    expect(find.descendant(of: bottomNavFinder, matching: find.widgetWithText(BottomNavigationBar, 'Vocabulary')), findsOneWidget);
-    expect(find.descendant(of: bottomNavFinder, matching: find.widgetWithText(BottomNavigationBar, 'Phrases')), findsOneWidget);
-    expect(find.descendant(of: bottomNavFinder, matching: find.widgetWithText(BottomNavigationBar, 'Practice')), findsOneWidget);
+    // Use descendant text matchers scoped to BottomNavigationBar. This is resilient to
+    // internal label widgets and avoids assuming global uniqueness.
+    expect(find.descendant(of: bottomNavFinder, matching: find.text('Vocabulary')), findsWidgets);
+    expect(find.descendant(of: bottomNavFinder, matching: find.text('Phrases')), findsWidgets);
+    expect(find.descendant(of: bottomNavFinder, matching: find.text('Practice')), findsWidgets);
   });
 
   testWidgets('Home shell renders with bottom navigation icons', (WidgetTester tester) async {
