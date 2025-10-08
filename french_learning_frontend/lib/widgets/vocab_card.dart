@@ -91,19 +91,25 @@ class VocabCard extends StatelessWidget {
                   ),
                   Column(
                     children: [
-                      IconButton(
-                        onPressed: onToggleFavorite,
-                        icon: Icon(isFavorite ? Icons.star : Icons.star_border),
-                        color: favColor,
-                        tooltip: isFavorite ? 'Remove from favorites' : 'Add to favorites',
-                        semanticLabel: 'Toggle favorite for ${item.french}',
+                      Semantics(
+                        label: 'Toggle favorite for ${item.french}',
+                        button: true,
+                        child: IconButton(
+                          onPressed: onToggleFavorite,
+                          icon: Icon(isFavorite ? Icons.star : Icons.star_border),
+                          color: favColor,
+                          tooltip: isFavorite ? 'Remove from favorites' : 'Add to favorites',
+                        ),
                       ),
-                      IconButton(
-                        onPressed: onToggleLearned,
-                        icon: Icon(isLearned ? Icons.check_circle : Icons.check_circle_outline),
-                        color: learnedColor,
-                        tooltip: isLearned ? 'Mark as unlearned' : 'Mark as learned',
-                        semanticLabel: 'Toggle learned for ${item.french}',
+                      Semantics(
+                        label: 'Toggle learned for ${item.french}',
+                        button: true,
+                        child: IconButton(
+                          onPressed: onToggleLearned,
+                          icon: Icon(isLearned ? Icons.check_circle : Icons.check_circle_outline),
+                          color: learnedColor,
+                          tooltip: isLearned ? 'Mark as unlearned' : 'Mark as learned',
+                        ),
                       ),
                     ],
                   ),

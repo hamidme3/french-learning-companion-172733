@@ -51,12 +51,15 @@ class PhraseCard extends StatelessWidget {
                 ),
               ),
             ),
-            IconButton(
-              onPressed: onToggleFavorite,
-              icon: Icon(isFavorite ? Icons.star : Icons.star_border),
-              color: favColor,
-              tooltip: isFavorite ? 'Remove from favorites' : 'Add to favorites',
-              semanticLabel: 'Toggle favorite for ${item.french}',
+            Semantics(
+              label: 'Toggle favorite for ${item.french}',
+              button: true,
+              child: IconButton(
+                onPressed: onToggleFavorite,
+                icon: Icon(isFavorite ? Icons.star : Icons.star_border),
+                color: favColor,
+                tooltip: isFavorite ? 'Remove from favorites' : 'Add to favorites',
+              ),
             ),
           ],
         ),
