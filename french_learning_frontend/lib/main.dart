@@ -1,54 +1,26 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+
+import 'theme/app_theme.dart';
+import 'state/app_state.dart';
+import 'screens/home_shell.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(const FrenchLearningApp());
 }
 
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+class FrenchLearningApp extends StatelessWidget {
+  const FrenchLearningApp({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'AI Build Tool',
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.blue),
-        useMaterial3: true,
-      ),
-      home: const MyHomePage(title: 'french_learning_frontend'),
-    );
-  }
-}
-
-class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key, required this.title});
-
-  final String title;
-
-  @override
-  State<MyHomePage> createState() => _MyHomePageState();
-}
-
-class _MyHomePageState extends State<MyHomePage> {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-        title: Text(widget.title),
-      ),
-      body: const Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Text(
-              'french_learning_frontend App is being generated...',
-              style: TextStyle(fontSize: 18),
-            ),
-            SizedBox(height: 20),
-            CircularProgressIndicator(),
-          ],
-        ),
+    return ChangeNotifierProvider<AppState>(
+      create: (_) => AppState(),
+      child: MaterialApp(
+        debugShowCheckedModeBanner: false,
+        title: 'French Learning Companion',
+        theme: AppTheme.lightTheme(),
+        home: const HomeShell(),
       ),
     );
   }
