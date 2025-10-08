@@ -1,26 +1,15 @@
-# This file configures the analyzer, which statically analyzes Dart code to
-# check for errors, warnings, and lints.
-#
-# The issues identified by the analyzer are surfaced in the UI of Dart-enabled
-# IDEs (https://dart.dev/tools#ides-and-editors). The analyzer can also be
-# invoked from the command line by running `flutter analyze`.
-
-# The following line activates a set of recommended lints for Flutter apps,
-# packages, and plugins designed to encourage good coding practices.
 include: package:flutter_lints/flutter.yaml
 
 analyzer:
   exclude:
-    # Exclude any temporary export staging directories that may contain transient copies
-    # of pubspec.yaml created during packaging, which can trigger false analyzer warnings.
-    - flutter_source_export_staging_*/
-    - flutter_source_export_staging_*/**
-    - **/flutter_source_export_staging_*/
-    - **/flutter_source_export_staging_*/**
+    - build/**
+    - lib/**.g.dart
+    - lib/**.freezed.dart
+    # Exclude export staging directories explicitly
+    - flutter_source_export_staging_1759937367/**
+    - flutter_source_export_staging_1759937375/**
+    - flutter_source_export_staging_1759937379/**
 
 linter:
   rules:
-    # You can customize lint rules here if needed.
-    # Example:
-    # avoid_print: false
-    # prefer_single_quotes: true
+    # Add or override lint rules here if needed
