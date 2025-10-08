@@ -1,1 +1,3 @@
-# french-learning-companion-172733
+# Project Repository
+
+This is the initial README file for the project.
