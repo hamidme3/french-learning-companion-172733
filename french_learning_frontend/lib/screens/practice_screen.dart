@@ -11,8 +11,12 @@ class PracticeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final state = context.watch<AppState>();
+    final questions = state.quizQuestions;
+    if (questions.isEmpty) {
+      return const Center(child: CircularProgressIndicator(strokeWidth: 2));
+    }
     final question = state.currentQuestion;
-    final total = state.quizQuestions.length;
+    final total = questions.length;
     final idx = state.quizIndex + 1;
 
     return Padding(

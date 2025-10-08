@@ -9,6 +9,8 @@ import '../models/phrase_item.dart';
 /// phrases, user favorites/learned, and quiz functionality.
 class AppState extends ChangeNotifier {
   AppState() {
+    // Ensure quiz questions are available synchronously for initial builds/tests.
+    _generateQuiz();
     _init();
   }
 
@@ -60,7 +62,8 @@ class AppState extends ChangeNotifier {
   // Quiz state
   int _quizIndex = 0;
   int _quizScore = 0;
-  late List<_QuizQuestion> _quizQuestions;
+  // Initialize as empty to avoid LateInitializationError; will be populated by _generateQuiz().
+  List<_QuizQuestion> _quizQuestions = [];
   bool _quizAnswered = false;
   String? _lastSelectedOption;
 
@@ -114,7 +117,9 @@ class AppState extends ChangeNotifier {
   String? get lastSelectedOption => _lastSelectedOption;
 
   // PUBLIC_INTERFACE
-  List<_QuizQuestion> get quizQuestions => _quizQuestions;
+  /// Public read-only view of quiz questions to avoid exposing private types.
+  List<QuizQuestionView> get quizQuestions =>
+      _quizQuestions.map((q) => QuizQuestionView.fromInternal(q)).toList(growable: false);
 
   // PUBLIC_INTERFACE
   void restartQuiz() {
@@ -147,7 +152,22 @@ class AppState extends ChangeNotifier {
     }
   }
 
-  _QuizQuestion get currentQuestion => _quizQuestions[_quizIndex];
+  QuizQuestionView get currentQuestion {
+    // Guard: if quiz list is empty, generate a minimal placeholder to avoid crashes.
+    // UI layer also guards for empty list and shows a loader, so this is a fallback.
+    if (_quizQuestions.isEmpty) {
+      // Create a deterministic single-question placeholder
+      final placeholder = _QuizQuestion(
+        prompt: 'Loading quiz…',
+        correct: '…',
+        options: const ['…'],
+        enToFr: true,
+        base: vocabulary.first,
+      );
+      return QuizQuestionView.fromInternal(placeholder);
+    }
+    return QuizQuestionView.fromInternal(_quizQuestions[_quizIndex]);
+  }
 
   void _generateQuiz() {
     // Multiple-choice 10 questions: either EN->FR or FR->EN with 3 distractors
@@ -204,4 +224,24 @@ class _QuizQuestion {
   });
 
   bool isCorrect(String selection) => selection == correct;
+}
+
+/// PUBLIC_INTERFACE
+class QuizQuestionView {
+  /** Public view of a quiz question to avoid exposing private types. */
+  final String prompt;
+  final String correct;
+  final List<String> options;
+
+  QuizQuestionView({
+    required this.prompt,
+    required this.correct,
+    required this.options,
+  });
+
+  factory QuizQuestionView.fromInternal(_QuizQuestion q) => QuizQuestionView(
+        prompt: q.prompt,
+        correct: q.correct,
+        options: List<String>.unmodifiable(q.options),
+      );
 }
