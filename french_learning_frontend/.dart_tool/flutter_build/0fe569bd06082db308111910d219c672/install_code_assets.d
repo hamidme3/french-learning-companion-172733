@@ -1,0 +1,1 @@
+ /home/kavia/workspace/code-generation/french-learning-companion-172733/french_learning_frontend/.dart_tool/flutter_build/0fe569bd06082db308111910d219c672/native_assets.json: 
