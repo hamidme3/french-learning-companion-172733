@@ -3,21 +3,29 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:french_learning_frontend/main.dart';
 
 void main() {
-  testWidgets('Bottom navigation has three tabs', (WidgetTester tester) async {
+  testWidgets('BottomNavigationBar shows Vocabulary, Phrases, Practice labels', (WidgetTester tester) async {
     await tester.pumpWidget(const FrenchLearningApp());
     await tester.pumpAndSettle();
 
-    expect(find.text('Vocabulary'), findsOneWidget);
-    expect(find.text('Phrases'), findsOneWidget);
-    expect(find.text('Practice'), findsOneWidget);
+    // Scope text expectations to the BottomNavigationBar to avoid duplicates elsewhere in UI.
+    final bottomNavFinder = find.byType(BottomNavigationBar);
+    expect(bottomNavFinder, findsOneWidget);
+
+    expect(find.descendant(of: bottomNavFinder, matching: find.widgetWithText(BottomNavigationBar, 'Vocabulary')), findsOneWidget);
+    expect(find.descendant(of: bottomNavFinder, matching: find.widgetWithText(BottomNavigationBar, 'Phrases')), findsOneWidget);
+    expect(find.descendant(of: bottomNavFinder, matching: find.widgetWithText(BottomNavigationBar, 'Practice')), findsOneWidget);
   });
 
-  testWidgets('App renders home shell', (WidgetTester tester) async {
+  testWidgets('Home shell renders with bottom navigation icons', (WidgetTester tester) async {
     await tester.pumpWidget(const FrenchLearningApp());
     await tester.pump();
 
-    expect(find.byIcon(Icons.book_outlined), findsOneWidget);
-    expect(find.byIcon(Icons.chat_bubble_outline), findsOneWidget);
-    expect(find.byIcon(Icons.school_outlined), findsOneWidget);
+    // Focused on BottomNavigationBar icons existence, not global texts.
+    final bottomNavFinder = find.byType(BottomNavigationBar);
+    expect(bottomNavFinder, findsOneWidget);
+
+    expect(find.descendant(of: bottomNavFinder, matching: find.byIcon(Icons.book_outlined)), findsOneWidget);
+    expect(find.descendant(of: bottomNavFinder, matching: find.byIcon(Icons.chat_bubble_outline)), findsOneWidget);
+    expect(find.descendant(of: bottomNavFinder, matching: find.byIcon(Icons.school_outlined)), findsOneWidget);
   });
 }

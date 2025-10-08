@@ -136,7 +136,8 @@ class AppState extends ChangeNotifier {
     if (_quizAnswered) return;
     _quizAnswered = true;
     _lastSelectedOption = option;
-    if (currentQuestion.isCorrect(option)) {
+    // Compare against the current question's correct answer without exposing private types.
+    if (currentQuestion.correct == option) {
       _quizScore++;
     }
     notifyListeners();
@@ -228,7 +229,7 @@ class _QuizQuestion {
 
 /// PUBLIC_INTERFACE
 class QuizQuestionView {
-  /** Public view of a quiz question to avoid exposing private types. */
+  /// Public view of a quiz question to avoid exposing private types.
   final String prompt;
   final String correct;
   final List<String> options;
@@ -239,6 +240,8 @@ class QuizQuestionView {
     required this.options,
   });
 
+  // Internal-only conversion factory; not part of public API surface despite being in public class.
+  // ignore: library_private_types_in_public_api
   factory QuizQuestionView.fromInternal(_QuizQuestion q) => QuizQuestionView(
         prompt: q.prompt,
         correct: q.correct,
